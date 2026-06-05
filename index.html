@@ -6,17 +6,17 @@
   <title>Đăng ký Người Phụ Thuộc | Dependent Registration</title>
   <style>
     :root {
-      --primary:   #1a3c6b;
-      --accent:    #2563eb;
-      --danger:    #dc2626;
-      --warn-bg:   #fff7ed;
+      --primary:    #1a3c6b;
+      --accent:     #2563eb;
+      --danger:     #dc2626;
+      --warn-bg:    #fff7ed;
       --warn-border:#f97316;
-      --surface:   #ffffff;
-      --bg:        #f1f5f9;
-      --border:    #cbd5e1;
-      --text:      #1e293b;
-      --muted:     #64748b;
-      --radius:    10px;
+      --surface:    #ffffff;
+      --bg:         #f1f5f9;
+      --border:     #cbd5e1;
+      --text:       #1e293b;
+      --muted:      #64748b;
+      --radius:     10px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -36,9 +36,7 @@
       justify-content: space-between;
     }
     .topbar .brand { color: #fff; font-size: 1.1rem; font-weight: 700; letter-spacing: .5px; }
-    .lang-toggle {
-      display: flex; gap: 6px;
-    }
+    .lang-toggle { display: flex; gap: 6px; }
     .lang-toggle button {
       background: transparent;
       border: 1.5px solid rgba(255,255,255,.5);
@@ -56,7 +54,7 @@
       border-color: #fff;
     }
 
-    /* ── HERO HEADER ─────────────────────────────── */
+    /* ── HERO ────────────────────────────────────── */
     .hero {
       background: linear-gradient(135deg, var(--primary) 0%, #234e8c 100%);
       color: #fff;
@@ -110,7 +108,6 @@
       color: var(--text);
     }
     .required-star { color: var(--danger); margin-left: 3px; }
-
     input[type="text"], input[type="email"] {
       width: 100%;
       padding: 10px 14px;
@@ -120,9 +117,7 @@
       outline: none;
       transition: border-color .2s;
     }
-    input[type="text"]:focus, input[type="email"]:focus {
-      border-color: var(--accent);
-    }
+    input[type="text"]:focus, input[type="email"]:focus { border-color: var(--accent); }
 
     .radio-group { display: flex; flex-direction: column; gap: 10px; }
     .radio-option {
@@ -141,7 +136,7 @@
     .radio-option .opt-sub { font-size: .8rem; color: var(--muted); margin-top: 2px; }
     .radio-option.selected { border-color: var(--accent); background: #eff6ff; }
 
-    /* ── UPLOAD ZONE ─────────────────────────────── */
+    /* ── DOC REQUIREMENTS ────────────────────────── */
     .doc-requirements {
       background: var(--warn-bg);
       border: 1px solid var(--warn-border);
@@ -155,6 +150,7 @@
     .doc-requirements ul ul { margin-top: 4px; color: #92400e; font-style: italic; }
     .doc-requirements .highlight { color: var(--danger); font-weight: 700; }
 
+    /* ── UPLOAD ZONE ─────────────────────────────── */
     .upload-zone {
       border: 2px dashed var(--border);
       border-radius: 8px;
@@ -183,12 +179,10 @@
       color: var(--danger); cursor: pointer; font-size: 1rem; padding: 0 2px;
     }
 
-    /* ── STEP / SECTION ──────────────────────────── */
+    /* ── SECTIONS ────────────────────────────────── */
     .form-section { display: none; }
     .form-section.visible { display: block; }
     .form-group { margin-bottom: 22px; }
-
-    /* ── DIVIDER ─────────────────────────────────── */
     .divider { border: none; border-top: 1px solid #e2e8f0; margin: 24px 0; }
 
     /* ── SUBMIT ──────────────────────────────────── */
@@ -207,6 +201,7 @@
     }
     .btn-submit:hover { background: #234e8c; transform: translateY(-1px); }
     .btn-submit:active { transform: translateY(0); }
+    .btn-submit:disabled { background: #94a3b8; cursor: not-allowed; transform: none; }
 
     /* ── SUCCESS ─────────────────────────────────── */
     .success-card {
@@ -215,12 +210,24 @@
       padding: 48px 32px;
     }
     .success-card .icon { font-size: 3rem; margin-bottom: 16px; }
-    .success-card h2 { color: var(--primary); margin-bottom: 10px; }
-    .success-card p { color: var(--muted); font-size: .93rem; }
+    .success-card h2 { color: var(--primary); margin-bottom: 10px; font-size: 1.4rem; }
+    .success-card p { color: var(--muted); font-size: .93rem; line-height: 1.6; }
 
     /* ── VALIDATION ──────────────────────────────── */
     .error-msg { color: var(--danger); font-size: .8rem; margin-top: 5px; display: none; }
-    .field-error input, .field-error .upload-zone { border-color: var(--danger) !important; }
+
+    /* ── ADMIN CONFIG BANNER ─────────────────────── */
+    .config-banner {
+      background: #fefce8;
+      border: 1.5px dashed #ca8a04;
+      border-radius: 8px;
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      font-size: .82rem;
+      color: #92400e;
+    }
+    .config-banner strong { display: block; margin-bottom: 4px; color: #78350f; }
+    .config-banner code { background: #fef3c7; padding: 1px 5px; border-radius: 3px; font-size: .8rem; }
 
     .footer-note {
       text-align: center; font-size: .78rem; color: #94a3b8; margin-top: 28px;
@@ -229,60 +236,104 @@
 </head>
 <body>
 
-<!-- TOP BAR -->
+<!-- ══ TOP BAR ══════════════════════════════════════ -->
 <div class="topbar">
-  <span class="brand" id="brand-text">Ingenium VN — HR Portal</span>
+  <span class="brand">Ingenium VN — HR Portal</span>
   <div class="lang-toggle">
     <button id="btn-vi" class="active" onclick="setLang('vi')">🇻🇳 Tiếng Việt</button>
     <button id="btn-en" onclick="setLang('en')">🇬🇧 English</button>
   </div>
 </div>
 
-<!-- HERO -->
+<!-- ══ HERO ═════════════════════════════════════════ -->
 <div class="hero">
-  <h1 id="hero-title">Đăng ký Người Phụ Thuộc</h1>
-  <p class="subtitle" id="hero-sub">Dành cho nhân viên Ingenium VN &bull; For Ingenium VN Employees</p>
+  <h1>
+    <span class="vi-text">Đăng ký Người Phụ Thuộc</span>
+    <span class="en-text" style="display:none">Dependent Registration</span>
+  </h1>
+  <p class="subtitle">
+    <span class="vi-text">Dành cho nhân viên Ingenium VN</span>
+    <span class="en-text" style="display:none">For Ingenium VN Employees</span>
+  </p>
 </div>
 
-<!-- MAIN FORM CARD -->
+<!-- ══ MAIN CARD ════════════════════════════════════ -->
 <div class="card" id="form-card">
 
   <!-- POLICY BOX -->
   <div class="policy-box">
-    <h2 id="pol-title">Quy Định Chung / General Policy</h2>
+    <h2>
+      <span class="vi-text">Quy Định Chung</span>
+      <span class="en-text" style="display:none">General Policy</span>
+    </h2>
+
     <div class="policy-case">
-      <h3 id="pol-case1-title">1. Cha mẹ ruột, cha mẹ vợ/chồng &nbsp;|&nbsp; Parents / Parents-in-law</h3>
+      <h3>
+        <span class="vi-text">1. Cha mẹ ruột, cha mẹ vợ/chồng</span>
+        <span class="en-text" style="display:none">1. Parents / Parents-in-law</span>
+      </h3>
       <ul>
-        <li id="pol-c1-a">Ngoài độ tuổi lao động &nbsp;/&nbsp; <em>Beyond working age</em></li>
-        <li id="pol-c1-b">Trong độ tuổi lao động nhưng mất khả năng lao động &nbsp;/&nbsp; <em>Within working age but incapacitated</em></li>
+        <li>
+          <span class="vi-text">Ngoài độ tuổi lao động</span>
+          <span class="en-text" style="display:none">Beyond working age (Male ≥ 60, Female ≥ 55)</span>
+        </li>
+        <li>
+          <span class="vi-text">Trong độ tuổi lao động nhưng mất khả năng lao động</span>
+          <span class="en-text" style="display:none">Within working age but incapacitated</span>
+        </li>
       </ul>
     </div>
+
     <div class="policy-case">
-      <h3 id="pol-case2-title">2. Con ruột / Con nuôi / Con ngoài giá thú / Con riêng &nbsp;|&nbsp; Biological / Adopted / Illegitimate / Step-children</h3>
+      <h3>
+        <span class="vi-text">2. Con ruột / Con nuôi / Con ngoài giá thú / Con riêng</span>
+        <span class="en-text" style="display:none">2. Biological / Adopted / Illegitimate / Step-children</span>
+      </h3>
       <ul>
-        <li id="pol-c2-a">Dưới 18 tuổi &nbsp;/&nbsp; <em>Under 18 years old</em></li>
-        <li id="pol-c2-b">Trên 18 tuổi và còn đi học &nbsp;/&nbsp; <em>Over 18 and still enrolled in school</em></li>
+        <li>
+          <span class="vi-text">Dưới 18 tuổi</span>
+          <span class="en-text" style="display:none">Under 18 years old</span>
+        </li>
+        <li>
+          <span class="vi-text">Trên 18 tuổi và còn đi học</span>
+          <span class="en-text" style="display:none">Over 18 and still enrolled in school</span>
+        </li>
       </ul>
     </div>
-    <p class="policy-note" id="pol-note">
-      Vui lòng chọn trường hợp phù hợp để thực hiện thủ tục. &nbsp;/&nbsp;
-      <em>Please select the applicable case to proceed.</em>
+
+    <p class="policy-note">
+      <span class="vi-text">Ingenium VN sẽ thực hiện đăng ký người phụ thuộc cho các trường hợp được liệt kê trên. Vui lòng chọn trường hợp phù hợp để thực hiện thủ tục.</span>
+      <span class="en-text" style="display:none">Ingenium VN will process dependent registration for the cases listed above. Please select the applicable case to proceed.</span>
     </p>
   </div>
 
-  <form id="dep-form" novalidate>
+  <!-- FORM -->
+  <form id="dep-form"
+        action="https://formsubmit.co/ADMIN_EMAIL_HERE"
+        method="POST"
+        enctype="multipart/form-data"
+        novalidate>
 
-    <!-- EMPLOYEE INFO -->
+    <!-- FormSubmit hidden config -->
+    <input type="hidden" name="_subject" value="[Người Phụ Thuộc / Dependent] Đăng ký mới">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_next" id="next-url" value="">
+    <input type="hidden" name="Loại hồ sơ / Case Type" id="hidden-case-type" value="">
+    <input type="hidden" name="Điều kiện cha mẹ / Parent Condition" id="hidden-parent-cond" value="">
+    <input type="hidden" name="Điều kiện con / Child Condition" id="hidden-child-cond" value="">
+
+    <!-- ── EMPLOYEE INFO ──────────────────────── -->
     <div class="form-group">
       <label class="field-label" for="emp-name">
         <span class="vi-text">Họ và tên nhân viên</span>
         <span class="en-text" style="display:none">Employee Full Name</span>
         <span class="required-star">*</span>
       </label>
-      <input type="text" id="emp-name" name="employee_name"
-             placeholder="Nguyễn Văn A" autocomplete="name" />
+      <input type="text" id="emp-name" name="Họ tên nhân viên / Employee Name"
+             autocomplete="name" />
       <div class="error-msg" id="err-name">
-        <span class="vi-text">Vui lòng nhập họ tên.</span>
+        <span class="vi-text">Vui lòng nhập họ và tên.</span>
         <span class="en-text" style="display:none">Please enter your full name.</span>
       </div>
     </div>
@@ -293,17 +344,17 @@
         <span class="en-text" style="display:none">Work Email</span>
         <span class="required-star">*</span>
       </label>
-      <input type="email" id="emp-email" name="employee_email"
-             placeholder="ten.ho@ingeniumvn.com" autocomplete="email" />
+      <input type="email" id="emp-email" name="Email nhân viên / Employee Email"
+             autocomplete="email" />
       <div class="error-msg" id="err-email">
-        <span class="vi-text">Vui lòng nhập email hợp lệ.</span>
-        <span class="en-text" style="display:none">Please enter a valid email.</span>
+        <span class="vi-text">Vui lòng nhập địa chỉ email hợp lệ.</span>
+        <span class="en-text" style="display:none">Please enter a valid email address.</span>
       </div>
     </div>
 
     <hr class="divider" />
 
-    <!-- Q1: CASE SELECTION -->
+    <!-- ── Q1: CASE SELECTION ─────────────────── -->
     <div class="form-group">
       <p class="section-title">
         <span class="vi-text">1. Chọn trường hợp áp dụng</span>
@@ -312,7 +363,7 @@
       </p>
       <div class="radio-group" id="case-group">
 
-        <label class="radio-option" id="opt-parents-wrap">
+        <label class="radio-option">
           <input type="radio" name="case_type" value="parents" onchange="onCaseChange()" />
           <div>
             <div class="opt-label">
@@ -326,7 +377,7 @@
           </div>
         </label>
 
-        <label class="radio-option" id="opt-children-wrap">
+        <label class="radio-option">
           <input type="radio" name="case_type" value="children" onchange="onCaseChange()" />
           <div>
             <div class="opt-label">
@@ -340,7 +391,7 @@
           </div>
         </label>
 
-        <label class="radio-option" id="opt-both-wrap">
+        <label class="radio-option">
           <input type="radio" name="case_type" value="both" onchange="onCaseChange()" />
           <div>
             <div class="opt-label">
@@ -357,7 +408,7 @@
       </div>
     </div>
 
-    <!-- ══ PARENTS SECTION ══ -->
+    <!-- ══ PARENTS SECTION ════════════════════════ -->
     <div class="form-section" id="sec-parents">
       <hr class="divider" />
       <p class="section-title">
@@ -376,7 +427,7 @@
             </div>
             <div class="opt-sub">
               <span class="vi-text">Nam ≥ 60 tuổi, Nữ ≥ 55 tuổi</span>
-              <span class="en-text" style="display:none">Male ≥ 60 yrs, Female ≥ 55 yrs</span>
+              <span class="en-text" style="display:none">Male ≥ 60 yrs old, Female ≥ 55 yrs old</span>
             </div>
           </div>
         </label>
@@ -411,7 +462,7 @@
         <span class="en-text" style="display:none">Please select a condition.</span>
       </div>
 
-      <!-- Upload: parents over age -->
+      <!-- Upload: parents beyond working age -->
       <div class="form-section" id="sec-p-over">
         <hr class="divider" />
         <p class="section-title" style="font-size:.93rem">
@@ -430,7 +481,7 @@
               <span class="en-text" style="display:none">Tax registration authorization form (Form 41/UQ-ĐKT)</span>
             </li>
             <li>
-              <span class="vi-text">Bản sao/ảnh/scan Căn cước công dân của người phụ thuộc</span>
+              <span class="vi-text">Bản sao / ảnh / scan Căn cước công dân của người phụ thuộc</span>
               <span class="en-text" style="display:none">Copy / scan of dependent's National ID Card (CCCD)</span>
             </li>
             <li>
@@ -443,7 +494,7 @@
                 </li>
                 <li>
                   <span class="vi-text">Cha mẹ vợ/chồng: Giấy đăng ký kết hôn + Giấy khai sinh của vợ/chồng</span>
-                  <span class="en-text" style="display:none">Parents-in-law: Marriage certificate + Birth certificate of spouse</span>
+                  <span class="en-text" style="display:none">Parents-in-law: Marriage certificate + Spouse's birth certificate</span>
                 </li>
               </ul>
             </li>
@@ -453,22 +504,31 @@
             </li>
           </ul>
         </div>
-        <div class="upload-zone" id="drop-p-over" ondragover="dragOver(event,'drop-p-over')" ondragleave="dragLeave('drop-p-over')" ondrop="dropFiles(event,'up-p-over','drop-p-over','list-p-over')">
-          <input type="file" id="up-p-over" name="docs_parent_over_age" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.mp4,.mp3" onchange="handleFiles(this,'list-p-over')" />
+        <div class="upload-zone" id="drop-p-over"
+             ondragover="dragOver(event,'drop-p-over')"
+             ondragleave="dragLeave('drop-p-over')"
+             ondrop="dropFiles(event,'up-p-over','drop-p-over','list-p-over')">
+          <input type="file" id="up-p-over" name="docs_parent_over_age" multiple
+                 accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
+                 onchange="handleFiles(this,'list-p-over')" />
           <div class="upload-icon">📁</div>
           <div class="upload-text">
-            <span class="vi-text"><strong>Nhấn để chọn file</strong> hoặc kéo thả vào đây</span>
-            <span class="en-text" style="display:none"><strong>Click to select files</strong> or drag & drop here</span>
+            <strong>
+              <span class="vi-text">Nhấn để chọn file</span>
+              <span class="en-text" style="display:none">Click to select files</span>
+            </strong>
+            <span class="vi-text"> hoặc kéo thả vào đây</span>
+            <span class="en-text" style="display:none"> or drag &amp; drop here</span>
           </div>
           <div class="upload-limit">
-            <span class="vi-text">Tối đa 6 file · 100MB/file · Định dạng: Word, Excel, PPT, PDF, Ảnh, Video, Audio</span>
-            <span class="en-text" style="display:none">Max 6 files · 100MB each · Formats: Word, Excel, PPT, PDF, Image, Video, Audio</span>
+            <span class="vi-text">Tối đa 6 file · 10MB/file · PDF, Word, Excel, Ảnh</span>
+            <span class="en-text" style="display:none">Max 6 files · 10MB each · PDF, Word, Excel, Image</span>
           </div>
         </div>
         <div class="file-list" id="list-p-over"></div>
         <div class="error-msg" id="err-p-over">
-          <span class="vi-text">Vui lòng tải lên tài liệu cần thiết.</span>
-          <span class="en-text" style="display:none">Please upload the required documents.</span>
+          <span class="vi-text">Vui lòng tải lên ít nhất một tài liệu.</span>
+          <span class="en-text" style="display:none">Please upload at least one document.</span>
         </div>
       </div>
 
@@ -491,7 +551,7 @@
               <span class="en-text" style="display:none">Tax registration authorization form (Form 41/UQ-ĐKT)</span>
             </li>
             <li>
-              <span class="vi-text">Bản sao/ảnh/scan Căn cước công dân của người phụ thuộc</span>
+              <span class="vi-text">Bản sao / ảnh / scan Căn cước công dân của người phụ thuộc</span>
               <span class="en-text" style="display:none">Copy / scan of dependent's National ID Card (CCCD)</span>
             </li>
             <li>
@@ -532,27 +592,36 @@
             </li>
           </ul>
         </div>
-        <div class="upload-zone" id="drop-p-incap" ondragover="dragOver(event,'drop-p-incap')" ondragleave="dragLeave('drop-p-incap')" ondrop="dropFiles(event,'up-p-incap','drop-p-incap','list-p-incap')">
-          <input type="file" id="up-p-incap" name="docs_parent_incap" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.mp4,.mp3" onchange="handleFiles(this,'list-p-incap')" />
+        <div class="upload-zone" id="drop-p-incap"
+             ondragover="dragOver(event,'drop-p-incap')"
+             ondragleave="dragLeave('drop-p-incap')"
+             ondrop="dropFiles(event,'up-p-incap','drop-p-incap','list-p-incap')">
+          <input type="file" id="up-p-incap" name="docs_parent_incap" multiple
+                 accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
+                 onchange="handleFiles(this,'list-p-incap')" />
           <div class="upload-icon">📁</div>
           <div class="upload-text">
-            <span class="vi-text"><strong>Nhấn để chọn file</strong> hoặc kéo thả vào đây</span>
-            <span class="en-text" style="display:none"><strong>Click to select files</strong> or drag & drop here</span>
+            <strong>
+              <span class="vi-text">Nhấn để chọn file</span>
+              <span class="en-text" style="display:none">Click to select files</span>
+            </strong>
+            <span class="vi-text"> hoặc kéo thả vào đây</span>
+            <span class="en-text" style="display:none"> or drag &amp; drop here</span>
           </div>
           <div class="upload-limit">
-            <span class="vi-text">Tối đa 6 file · 100MB/file</span>
-            <span class="en-text" style="display:none">Max 6 files · 100MB each</span>
+            <span class="vi-text">Tối đa 6 file · 10MB/file · PDF, Word, Excel, Ảnh</span>
+            <span class="en-text" style="display:none">Max 6 files · 10MB each · PDF, Word, Excel, Image</span>
           </div>
         </div>
         <div class="file-list" id="list-p-incap"></div>
         <div class="error-msg" id="err-p-incap">
-          <span class="vi-text">Vui lòng tải lên tài liệu cần thiết.</span>
-          <span class="en-text" style="display:none">Please upload the required documents.</span>
+          <span class="vi-text">Vui lòng tải lên ít nhất một tài liệu.</span>
+          <span class="en-text" style="display:none">Please upload at least one document.</span>
         </div>
       </div>
     </div><!-- /sec-parents -->
 
-    <!-- ══ CHILDREN SECTION ══ -->
+    <!-- ══ CHILDREN SECTION ═══════════════════════ -->
     <div class="form-section" id="sec-children">
       <hr class="divider" />
       <p class="section-title">
@@ -625,27 +694,36 @@
               <span class="en-text" style="display:none">Tax registration authorization form (Form 41/UQ-ĐKT)</span>
             </li>
             <li>
-              <span class="vi-text">Bản sao/ảnh/scan giấy khai sinh của con</span>
+              <span class="vi-text">Bản sao / ảnh / scan giấy khai sinh của con</span>
               <span class="en-text" style="display:none">Copy / scan of child's birth certificate</span>
             </li>
           </ul>
         </div>
-        <div class="upload-zone" id="drop-c-u18" ondragover="dragOver(event,'drop-c-u18')" ondragleave="dragLeave('drop-c-u18')" ondrop="dropFiles(event,'up-c-u18','drop-c-u18','list-c-u18')">
-          <input type="file" id="up-c-u18" name="docs_child_under18" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.mp4,.mp3" onchange="handleFiles(this,'list-c-u18')" />
+        <div class="upload-zone" id="drop-c-u18"
+             ondragover="dragOver(event,'drop-c-u18')"
+             ondragleave="dragLeave('drop-c-u18')"
+             ondrop="dropFiles(event,'up-c-u18','drop-c-u18','list-c-u18')">
+          <input type="file" id="up-c-u18" name="docs_child_under18" multiple
+                 accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
+                 onchange="handleFiles(this,'list-c-u18')" />
           <div class="upload-icon">📁</div>
           <div class="upload-text">
-            <span class="vi-text"><strong>Nhấn để chọn file</strong> hoặc kéo thả vào đây</span>
-            <span class="en-text" style="display:none"><strong>Click to select files</strong> or drag & drop here</span>
+            <strong>
+              <span class="vi-text">Nhấn để chọn file</span>
+              <span class="en-text" style="display:none">Click to select files</span>
+            </strong>
+            <span class="vi-text"> hoặc kéo thả vào đây</span>
+            <span class="en-text" style="display:none"> or drag &amp; drop here</span>
           </div>
           <div class="upload-limit">
-            <span class="vi-text">Tối đa 4 file · 100MB/file</span>
-            <span class="en-text" style="display:none">Max 4 files · 100MB each</span>
+            <span class="vi-text">Tối đa 4 file · 10MB/file · PDF, Word, Excel, Ảnh</span>
+            <span class="en-text" style="display:none">Max 4 files · 10MB each · PDF, Word, Excel, Image</span>
           </div>
         </div>
         <div class="file-list" id="list-c-u18"></div>
         <div class="error-msg" id="err-c-u18">
-          <span class="vi-text">Vui lòng tải lên tài liệu cần thiết.</span>
-          <span class="en-text" style="display:none">Please upload the required documents.</span>
+          <span class="vi-text">Vui lòng tải lên ít nhất một tài liệu.</span>
+          <span class="en-text" style="display:none">Please upload at least one document.</span>
         </div>
       </div>
 
@@ -668,35 +746,44 @@
               <span class="en-text" style="display:none">Tax registration authorization form (Form 41/UQ-ĐKT)</span>
             </li>
             <li>
-              <span class="vi-text">Bản sao/ảnh/scan giấy khai sinh của con</span>
+              <span class="vi-text">Bản sao / ảnh / scan giấy khai sinh của con</span>
               <span class="en-text" style="display:none">Copy / scan of child's birth certificate</span>
             </li>
             <li>
-              <span class="vi-text"><span class="highlight">Bản chụp thẻ sinh viên</span> hoặc giấy xác nhận đang theo học tại trường</span>
-              <span class="en-text" style="display:none"><span class="highlight">Student ID card copy</span> or school enrollment confirmation letter</span>
+              <span class="vi-text"><span class="highlight">Bản chụp thẻ sinh viên</span> hoặc giấy xác nhận đang theo học tại trường (ĐH, CĐ, Trung cấp, THPT, Dạy nghề)</span>
+              <span class="en-text" style="display:none"><span class="highlight">Student ID card copy</span> or school enrollment confirmation letter (University, College, Secondary, High School, Vocational)</span>
             </li>
           </ul>
         </div>
-        <div class="upload-zone" id="drop-c-o18" ondragover="dragOver(event,'drop-c-o18')" ondragleave="dragLeave('drop-c-o18')" ondrop="dropFiles(event,'up-c-o18','drop-c-o18','list-c-o18')">
-          <input type="file" id="up-c-o18" name="docs_child_over18" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.mp4,.mp3" onchange="handleFiles(this,'list-c-o18')" />
+        <div class="upload-zone" id="drop-c-o18"
+             ondragover="dragOver(event,'drop-c-o18')"
+             ondragleave="dragLeave('drop-c-o18')"
+             ondrop="dropFiles(event,'up-c-o18','drop-c-o18','list-c-o18')">
+          <input type="file" id="up-c-o18" name="docs_child_over18" multiple
+                 accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
+                 onchange="handleFiles(this,'list-c-o18')" />
           <div class="upload-icon">📁</div>
           <div class="upload-text">
-            <span class="vi-text"><strong>Nhấn để chọn file</strong> hoặc kéo thả vào đây</span>
-            <span class="en-text" style="display:none"><strong>Click to select files</strong> or drag & drop here</span>
+            <strong>
+              <span class="vi-text">Nhấn để chọn file</span>
+              <span class="en-text" style="display:none">Click to select files</span>
+            </strong>
+            <span class="vi-text"> hoặc kéo thả vào đây</span>
+            <span class="en-text" style="display:none"> or drag &amp; drop here</span>
           </div>
           <div class="upload-limit">
-            <span class="vi-text">Tối đa 4 file · 100MB/file</span>
-            <span class="en-text" style="display:none">Max 4 files · 100MB each</span>
+            <span class="vi-text">Tối đa 4 file · 10MB/file · PDF, Word, Excel, Ảnh</span>
+            <span class="en-text" style="display:none">Max 4 files · 10MB each · PDF, Word, Excel, Image</span>
           </div>
         </div>
         <div class="file-list" id="list-c-o18"></div>
         <div class="error-msg" id="err-c-o18">
-          <span class="vi-text">Vui lòng tải lên tài liệu cần thiết.</span>
-          <span class="en-text" style="display:none">Please upload the required documents.</span>
+          <span class="vi-text">Vui lòng tải lên ít nhất một tài liệu.</span>
+          <span class="en-text" style="display:none">Please upload at least one document.</span>
         </div>
       </div>
 
-      <!-- Upload: adopted -->
+      <!-- Upload: adopted / illegitimate / step -->
       <div class="form-section" id="sec-c-adopted">
         <hr class="divider" />
         <p class="section-title" style="font-size:.93rem">
@@ -715,7 +802,7 @@
               <span class="en-text" style="display:none">Tax registration authorization form (Form 41/UQ-ĐKT)</span>
             </li>
             <li>
-              <span class="vi-text">Bản sao/ảnh/scan giấy khai sinh của con</span>
+              <span class="vi-text">Bản sao / ảnh / scan giấy khai sinh của con</span>
               <span class="en-text" style="display:none">Copy / scan of child's birth certificate</span>
             </li>
             <li>
@@ -728,7 +815,7 @@
               <ul>
                 <li>
                   <span class="vi-text">Quyết định nhận con nuôi</span>
-                  <span class="en-text" style="display:none">Adoption decision</span>
+                  <span class="en-text" style="display:none">Adoption decision / decree</span>
                 </li>
                 <li>
                   <span class="vi-text">Quyết định công nhận quan hệ cha/mẹ-con do cơ quan có thẩm quyền cấp</span>
@@ -738,43 +825,62 @@
             </li>
           </ul>
         </div>
-        <div class="upload-zone" id="drop-c-adopted" ondragover="dragOver(event,'drop-c-adopted')" ondragleave="dragLeave('drop-c-adopted')" ondrop="dropFiles(event,'up-c-adopted','drop-c-adopted','list-c-adopted')">
-          <input type="file" id="up-c-adopted" name="docs_child_adopted" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.mp4,.mp3" onchange="handleFiles(this,'list-c-adopted')" />
+        <div class="upload-zone" id="drop-c-adopted"
+             ondragover="dragOver(event,'drop-c-adopted')"
+             ondragleave="dragLeave('drop-c-adopted')"
+             ondrop="dropFiles(event,'up-c-adopted','drop-c-adopted','list-c-adopted')">
+          <input type="file" id="up-c-adopted" name="docs_child_adopted" multiple
+                 accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
+                 onchange="handleFiles(this,'list-c-adopted')" />
           <div class="upload-icon">📁</div>
           <div class="upload-text">
-            <span class="vi-text"><strong>Nhấn để chọn file</strong> hoặc kéo thả vào đây</span>
-            <span class="en-text" style="display:none"><strong>Click to select files</strong> or drag & drop here</span>
+            <strong>
+              <span class="vi-text">Nhấn để chọn file</span>
+              <span class="en-text" style="display:none">Click to select files</span>
+            </strong>
+            <span class="vi-text"> hoặc kéo thả vào đây</span>
+            <span class="en-text" style="display:none"> or drag &amp; drop here</span>
           </div>
           <div class="upload-limit">
-            <span class="vi-text">Tối đa 7 file · 10MB/file (file quan hệ max 10MB)</span>
-            <span class="en-text" style="display:none">Max 7 files · 10MB for relationship docs</span>
+            <span class="vi-text">Tối đa 7 file · 10MB/file · PDF, Word, Excel, Ảnh</span>
+            <span class="en-text" style="display:none">Max 7 files · 10MB each · PDF, Word, Excel, Image</span>
           </div>
         </div>
         <div class="file-list" id="list-c-adopted"></div>
         <div class="error-msg" id="err-c-adopted">
-          <span class="vi-text">Vui lòng tải lên tài liệu cần thiết.</span>
-          <span class="en-text" style="display:none">Please upload the required documents.</span>
+          <span class="vi-text">Vui lòng tải lên ít nhất một tài liệu.</span>
+          <span class="en-text" style="display:none">Please upload at least one document.</span>
         </div>
       </div>
     </div><!-- /sec-children -->
 
-    <!-- SUBMIT -->
+    <!-- ── SUBMIT ──────────────────────────────── -->
     <hr class="divider" />
     <div class="submit-wrap">
-      <button type="submit" class="btn-submit">
+      <button type="submit" class="btn-submit" id="submit-btn">
         <span class="vi-text">📨 Nộp hồ sơ</span>
         <span class="en-text" style="display:none">📨 Submit Registration</span>
       </button>
     </div>
 
-  </form><!-- /dep-form -->
+  </form>
 
-  <!-- SUCCESS -->
+  <!-- SUCCESS (shown when ?submitted=1 is in URL) -->
   <div class="success-card" id="success-card">
     <div class="icon">✅</div>
-    <h2 id="succ-title">Đăng ký thành công!</h2>
-    <p id="succ-msg">Hồ sơ của bạn đã được ghi nhận. Bộ phận C&amp;B sẽ liên hệ trong vòng 3–5 ngày làm việc.</p>
-    <p id="succ-msg-en" style="display:none;margin-top:8px;font-style:italic;">Your registration has been received. The C&amp;B team will follow up within 3–5 working days.</p>
+    <h2>
+      <span class="vi-text">Đăng ký thành công!</span>
+      <span class="en-text" style="display:none">Registration Submitted!</span>
+    </h2>
+    <p>
+      <span class="vi-text">Hồ sơ của bạn đã được ghi nhận và gửi đến bộ phận C&amp;B.<br>Chúng tôi sẽ liên hệ lại trong vòng <strong>3–5 ngày làm việc</strong>.</span>
+      <span class="en-text" style="display:none">Your registration has been received and forwarded to the C&amp;B team.<br>We will follow up within <strong>3–5 working days</strong>.</span>
+    </p>
+    <br>
+    <button onclick="resetForm()" style="background:var(--primary);color:#fff;border:none;padding:10px 28px;border-radius:6px;cursor:pointer;font-size:.9rem;font-weight:600;margin-top:8px;">
+      <span class="vi-text">Đăng ký thêm</span>
+      <span class="en-text" style="display:none">Submit another</span>
+    </button>
   </div>
 
 </div><!-- /card -->
@@ -786,8 +892,29 @@
 </p>
 
 <script>
-/* ── LANGUAGE TOGGLE ─────────────────────────── */
+/* ════════════════════════════════════════════════
+   ADMIN CONFIGURATION — edit this section only
+   ════════════════════════════════════════════════ */
+const ADMIN_EMAIL = 'hr@ingeniumvn.com'; // ← Replace with your HR/admin email
+/* ════════════════════════════════════════════════ */
+
+/* ── INIT ────────────────────────────────────────── */
+window.addEventListener('DOMContentLoaded', () => {
+  // Wire up FormSubmit action and redirect URL dynamically
+  const form = document.getElementById('dep-form');
+  form.action = `https://formsubmit.co/${ADMIN_EMAIL}`;
+  const base = window.location.href.split('?')[0];
+  document.getElementById('next-url').value = base + '?submitted=1';
+
+  // Show success card if redirected back after submission
+  if (new URLSearchParams(window.location.search).get('submitted') === '1') {
+    showSuccess();
+  }
+});
+
+/* ── LANGUAGE TOGGLE ─────────────────────────────── */
 let currentLang = 'vi';
+
 function setLang(lang) {
   currentLang = lang;
   document.querySelectorAll('.vi-text').forEach(el => el.style.display = lang === 'vi' ? '' : 'none');
@@ -795,57 +922,103 @@ function setLang(lang) {
   document.getElementById('btn-vi').classList.toggle('active', lang === 'vi');
   document.getElementById('btn-en').classList.toggle('active', lang === 'en');
   document.documentElement.lang = lang;
+
+  // Switch input placeholders
+  document.getElementById('emp-name').placeholder =
+    lang === 'vi' ? 'Nguyễn Văn A' : 'Full Name';
+  document.getElementById('emp-email').placeholder =
+    lang === 'vi' ? 'ten.ho@ingeniumvn.com' : 'name@ingeniumvn.com';
 }
 
-/* ── CONDITIONAL VISIBILITY ──────────────────── */
-function show(id)  { document.getElementById(id).classList.add('visible'); }
-function hide(id)  { document.getElementById(id).classList.remove('visible'); }
+/* ── CONDITIONAL VISIBILITY ──────────────────────── */
+function show(id) { document.getElementById(id).classList.add('visible'); }
+function hide(id) { document.getElementById(id).classList.remove('visible'); }
 
 function onCaseChange() {
   const val = document.querySelector('input[name="case_type"]:checked')?.value;
+
   hide('sec-parents'); hide('sec-children');
-  // reset sub-selections
   document.querySelectorAll('input[name="parent_condition"]').forEach(r => r.checked = false);
   document.querySelectorAll('input[name="child_condition"]').forEach(r => r.checked = false);
-  hide('sec-p-over'); hide('sec-p-incap'); hide('sec-c-u18'); hide('sec-c-o18'); hide('sec-c-adopted');
+  hide('sec-p-over'); hide('sec-p-incap');
+  hide('sec-c-u18'); hide('sec-c-o18'); hide('sec-c-adopted');
+
   if (val === 'parents' || val === 'both') show('sec-parents');
   if (val === 'children' || val === 'both') show('sec-children');
-  // highlight selected option
-  document.querySelectorAll('#case-group .radio-option').forEach(opt => {
-    opt.classList.toggle('selected', opt.querySelector('input').checked);
-  });
+
+  document.querySelectorAll('#case-group .radio-option').forEach(opt =>
+    opt.classList.toggle('selected', opt.querySelector('input').checked)
+  );
   document.getElementById('err-case').style.display = 'none';
+
+  // Mirror to hidden field for email body
+  const labels = {
+    parents:  'Cha mẹ ruột / cha mẹ vợ chồng — Parents / Parents-in-law',
+    children: 'Con — Children',
+    both:     'Cả hai / Both'
+  };
+  document.getElementById('hidden-case-type').value = labels[val] || '';
 }
 
 function onParentCondChange() {
   const val = document.querySelector('input[name="parent_condition"]:checked')?.value;
   hide('sec-p-over'); hide('sec-p-incap');
-  if (val === 'over_age' || val === 'both_parent') show('sec-p-over');
+  if (val === 'over_age'     || val === 'both_parent') show('sec-p-over');
   if (val === 'incapacitated' || val === 'both_parent') show('sec-p-incap');
   document.getElementById('err-parent-cond').style.display = 'none';
+
+  const labels = {
+    over_age:      'Ngoài độ tuổi lao động / Beyond working age',
+    incapacitated: 'Mất khả năng lao động / Incapacitated',
+    both_parent:   'Cả hai / Both'
+  };
+  document.getElementById('hidden-parent-cond').value = labels[val] || '';
 }
 
 function onChildCondChange() {
   const val = document.querySelector('input[name="child_condition"]:checked')?.value;
   hide('sec-c-u18'); hide('sec-c-o18'); hide('sec-c-adopted');
-  if (val === 'under18')       show('sec-c-u18');
+  if (val === 'under18')        show('sec-c-u18');
   if (val === 'over18_studying') show('sec-c-o18');
-  if (val === 'adopted')       show('sec-c-adopted');
+  if (val === 'adopted')        show('sec-c-adopted');
   document.getElementById('err-child-cond').style.display = 'none';
+
+  const labels = {
+    under18:        'Dưới 18 tuổi / Under 18',
+    over18_studying:'Trên 18 tuổi còn đi học / Over 18 still studying',
+    adopted:        'Con nuôi / ngoài giá thú / riêng — Adopted / Illegitimate / Step-child'
+  };
+  document.getElementById('hidden-child-cond').value = labels[val] || '';
 }
 
-/* ── FILE UPLOAD ─────────────────────────────── */
+/* ── FILE UPLOAD ─────────────────────────────────── */
 function handleFiles(input, listId) {
   const list = document.getElementById(listId);
   Array.from(input.files).forEach(file => {
     const item = document.createElement('div');
     item.className = 'file-item';
-    item.innerHTML = `<span>📄</span><span>${file.name}</span><span style="color:var(--muted);font-size:.78rem;margin-left:6px">(${(file.size/1024/1024).toFixed(1)} MB)</span><button class="remove" title="Remove" onclick="this.parentElement.remove()">✕</button>`;
+    item.innerHTML =
+      `<span>📄</span>
+       <span>${file.name}</span>
+       <span style="color:var(--muted);font-size:.78rem;margin-left:6px">(${(file.size/1024/1024).toFixed(1)} MB)</span>
+       <button type="button" class="remove" title="Remove" onclick="removeFile(this,'${input.id}','${listId}')">✕</button>`;
     list.appendChild(item);
   });
 }
-function dragOver(e, dropId) { e.preventDefault(); document.getElementById(dropId).classList.add('drag-over'); }
-function dragLeave(dropId)   { document.getElementById(dropId).classList.remove('drag-over'); }
+
+function removeFile(btn, inputId, listId) {
+  btn.closest('.file-item').remove();
+  // Clear the input so the user can re-select if needed
+  document.getElementById(inputId).value = '';
+}
+
+function dragOver(e, dropId) {
+  e.preventDefault();
+  document.getElementById(dropId).classList.add('drag-over');
+}
+function dragLeave(dropId) {
+  document.getElementById(dropId).classList.remove('drag-over');
+}
 function dropFiles(e, inputId, dropId, listId) {
   e.preventDefault();
   dragLeave(dropId);
@@ -856,90 +1029,88 @@ function dropFiles(e, inputId, dropId, listId) {
   handleFiles(inp, listId);
 }
 
-/* ── FORM SUBMIT ─────────────────────────────── */
+/* ── VALIDATION ──────────────────────────────────── */
 document.getElementById('dep-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  if (!validateForm()) return;
-
-  // In production: POST to your backend / email service here.
-  // Example with FormSubmit: change action to https://formsubmit.co/YOUR_EMAIL
-  this.style.display = 'none';
-  document.getElementById('success-card').style.display = 'block';
-  document.getElementById('succ-title').textContent =
-    currentLang === 'vi' ? 'Đăng ký thành công! ✅' : 'Registration Submitted! ✅';
-  if (currentLang === 'en') {
-    document.getElementById('succ-msg').style.display = 'none';
-    document.getElementById('succ-msg-en').style.display = '';
+  if (!validateForm()) {
+    e.preventDefault();
+    return;
   }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Valid — update subject line with employee name before submitting
+  const name = document.getElementById('emp-name').value.trim();
+  this.querySelector('input[name="_subject"]').value =
+    `[Người Phụ Thuộc / Dependent] Đăng ký mới — ${name}`;
+  document.getElementById('submit-btn').disabled = true;
 });
 
 function validateForm() {
   let ok = true;
 
-  // Name
   const name = document.getElementById('emp-name').value.trim();
-  const errName = document.getElementById('err-name');
-  errName.style.display = name ? 'none' : 'block';
+  document.getElementById('err-name').style.display = name ? 'none' : 'block';
   if (!name) ok = false;
 
-  // Email
   const email = document.getElementById('emp-email').value.trim();
-  const errEmail = document.getElementById('err-email');
   const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  errEmail.style.display = validEmail ? 'none' : 'block';
+  document.getElementById('err-email').style.display = validEmail ? 'none' : 'block';
   if (!validEmail) ok = false;
 
-  // Case type
   const caseVal = document.querySelector('input[name="case_type"]:checked')?.value;
-  const errCase = document.getElementById('err-case');
-  errCase.style.display = caseVal ? 'none' : 'block';
-  if (!caseVal) { ok = false; }
+  document.getElementById('err-case').style.display = caseVal ? 'none' : 'block';
+  if (!caseVal) ok = false;
 
-  // Parent condition
   if (caseVal === 'parents' || caseVal === 'both') {
     const pCond = document.querySelector('input[name="parent_condition"]:checked')?.value;
-    const errPC = document.getElementById('err-parent-cond');
-    errPC.style.display = pCond ? 'none' : 'block';
+    document.getElementById('err-parent-cond').style.display = pCond ? 'none' : 'block';
     if (!pCond) ok = false;
-    // Upload check
+
     if (pCond === 'over_age' || pCond === 'both_parent') {
-      const hasFiles = document.getElementById('list-p-over').children.length > 0;
-      document.getElementById('err-p-over').style.display = hasFiles ? 'none' : 'block';
-      if (!hasFiles) ok = false;
+      const has = document.getElementById('list-p-over').children.length > 0;
+      document.getElementById('err-p-over').style.display = has ? 'none' : 'block';
+      if (!has) ok = false;
     }
     if (pCond === 'incapacitated' || pCond === 'both_parent') {
-      const hasFiles = document.getElementById('list-p-incap').children.length > 0;
-      document.getElementById('err-p-incap').style.display = hasFiles ? 'none' : 'block';
-      if (!hasFiles) ok = false;
+      const has = document.getElementById('list-p-incap').children.length > 0;
+      document.getElementById('err-p-incap').style.display = has ? 'none' : 'block';
+      if (!has) ok = false;
     }
   }
 
-  // Child condition
   if (caseVal === 'children' || caseVal === 'both') {
     const cCond = document.querySelector('input[name="child_condition"]:checked')?.value;
-    const errCC = document.getElementById('err-child-cond');
-    errCC.style.display = cCond ? 'none' : 'block';
+    document.getElementById('err-child-cond').style.display = cCond ? 'none' : 'block';
     if (!cCond) ok = false;
+
     if (cCond === 'under18') {
-      const hasFiles = document.getElementById('list-c-u18').children.length > 0;
-      document.getElementById('err-c-u18').style.display = hasFiles ? 'none' : 'block';
-      if (!hasFiles) ok = false;
+      const has = document.getElementById('list-c-u18').children.length > 0;
+      document.getElementById('err-c-u18').style.display = has ? 'none' : 'block';
+      if (!has) ok = false;
     }
     if (cCond === 'over18_studying') {
-      const hasFiles = document.getElementById('list-c-o18').children.length > 0;
-      document.getElementById('err-c-o18').style.display = hasFiles ? 'none' : 'block';
-      if (!hasFiles) ok = false;
+      const has = document.getElementById('list-c-o18').children.length > 0;
+      document.getElementById('err-c-o18').style.display = has ? 'none' : 'block';
+      if (!has) ok = false;
     }
     if (cCond === 'adopted') {
-      const hasFiles = document.getElementById('list-c-adopted').children.length > 0;
-      document.getElementById('err-c-adopted').style.display = hasFiles ? 'none' : 'block';
-      if (!hasFiles) ok = false;
+      const has = document.getElementById('list-c-adopted').children.length > 0;
+      document.getElementById('err-c-adopted').style.display = has ? 'none' : 'block';
+      if (!has) ok = false;
     }
   }
 
   if (!ok) window.scrollTo({ top: 0, behavior: 'smooth' });
   return ok;
+}
+
+/* ── SUCCESS STATE ───────────────────────────────── */
+function showSuccess() {
+  document.getElementById('dep-form').style.display = 'none';
+  document.getElementById('success-card').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetForm() {
+  // Remove ?submitted=1 from URL and reload
+  window.location.href = window.location.href.split('?')[0];
 }
 </script>
 </body>
