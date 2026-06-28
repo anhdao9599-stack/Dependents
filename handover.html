@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lưu trữ Hồ sơ Handover | Handover File Storage</title>
+  <style>
+    :root {
+      --primary:    #1a3c6b;
+      --accent:     #2563eb;
+      --danger:     #dc2626;
+      --success:    #16a34a;
+      --surface:    #ffffff;
+      --bg:         #f1f5f9;
+      --border:     #cbd5e1;
+      --text:       #1e293b;
+      --muted:      #64748b;
+      --radius:     10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+
+    /* ── TOP BAR ─── */
+    .topbar {
+      background: var(--primary);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .topbar .brand { color: #fff; font-size: 1.1rem; font-weight: 700; letter-spacing: .5px; }
+    .topbar nav a {
+      color: rgba(255,255,255,.8);
+      text-decoration: none;
+      font-size: .85rem;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1.5px solid rgba(255,255,255,.35);
+      transition: background .2s;
+    }
+    .topbar nav a:hover { background: rgba(255,255,255,.15); color: #fff; }
+
+    /* ── HERO ─── */
+    .hero {
+      background: linear-gradient(135deg, var(--primary) 0%, #234e8c 100%);
+      color: #fff;
+      padding: 32px 32px 24px;
+      text-align: center;
+    }
+    .hero h1 { font-size: 1.65rem; font-weight: 800; margin-bottom: 6px; }
+    .hero .subtitle { font-size: .95rem; opacity: .85; }
+
+    /* ── LAYOUT ─── */
+    .container { max-width: 860px; margin: 0 auto; padding: 0 16px; }
+
+    /* ── CARD ─── */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
+      padding: 28px 32px;
+      margin-top: 24px;
+    }
+    @media(max-width:600px){ .card { padding: 20px 16px; } }
+
+    /* ── SECTION TITLE ─── */
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 18px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    /* ── FORM ─── */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media(max-width:600px){ .form-grid { grid-template-columns: 1fr; } }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    label.field-label {
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .required-star { color: var(--danger); margin-left: 2px; }
+    input[type="text"], input[type="url"], textarea, select {
+      width: 100%;
+      padding: 9px 13px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-size: .9rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color .2s;
+      background: #fff;
+    }
+    input[type="text"]:focus,
+    input[type="url"]:focus,
+    textarea:focus,
+    select:focus { border-color: var(--accent); }
+    textarea { resize: vertical; min-height: 72px; }
+
+    /* SharePoint URL row */
+    .sp-input-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .sp-input-row input { flex: 1; }
+    .btn-add-sp {
+      flex-shrink: 0;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 9px 16px;
+      border-radius: 6px;
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+      white-space: nowrap;
+    }
+    .btn-add-sp:hover { background: #1d4ed8; }
+
+    /* SP link chips */
+    .sp-chips { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+    .sp-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: .82rem;
+    }
+    .sp-chip .sp-icon { font-size: 1rem; flex-shrink: 0; }
+    .sp-chip .sp-label {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--accent);
+    }
+    .sp-chip .sp-remove {
+      flex-shrink: 0;
+      background: none;
+      border: none;
+      color: var(--danger);
+      cursor: pointer;
+      font-size: .95rem;
+      padding: 0 2px;
+      line-height: 1;
+    }
+
+    /* ── SUBMIT BTN ─── */
+    .btn-submit {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 11px 36px;
+      border-radius: 8px;
+      font-size: .95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+      margin-top: 20px;
+    }
+    .btn-submit:hover { background: #234e8c; transform: translateY(-1px); }
+    .btn-submit:active { transform: translateY(0); }
+
+    .error-msg { color: var(--danger); font-size: .78rem; margin-top: 3px; display: none; }
+
+    /* ── HANDOVER LIST ─── */
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .search-bar input { flex: 1; }
+    .filter-select { width: 160px; flex-shrink: 0; }
+
+    .entry-grid { display: flex; flex-direction: column; gap: 14px; }
+
+    .entry-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      transition: box-shadow .2s;
+    }
+    .entry-card:hover { box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+
+    .entry-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+    .entry-title {
+      font-size: .98rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .entry-meta {
+      font-size: .78rem;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .entry-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .btn-icon {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 4px 8px;
+      font-size: .8rem;
+      cursor: pointer;
+      color: var(--muted);
+      transition: border-color .2s, color .2s;
+    }
+    .btn-icon:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-icon.del:hover { border-color: var(--danger); color: var(--danger); }
+
+    .entry-desc {
+      font-size: .86rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+      white-space: pre-wrap;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .badge-orange { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+    .badge-blue   { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    .badge-green  { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+    .badge-purple { background: #faf5ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+
+    .entry-links { display: flex; flex-direction: column; gap: 5px; }
+    .entry-link-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .82rem;
+    }
+    .entry-link-item a {
+      color: var(--accent);
+      text-decoration: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 480px;
+    }
+    .entry-link-item a:hover { text-decoration: underline; }
+    .link-label {
+      font-size: .75rem;
+      color: var(--muted);
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      padding: 1px 6px;
+      flex-shrink: 0;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+    .empty-state .empty-icon { font-size: 2.5rem; margin-bottom: 10px; }
+
+    /* ── MODAL ─── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 12px;
+      padding: 28px 32px;
+      width: 90%;
+      max-width: 580px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 8px 40px rgba(0,0,0,.2);
+    }
+    .modal-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+    .btn-cancel {
+      background: none;
+      border: 1.5px solid var(--border);
+      padding: 9px 22px;
+      border-radius: 7px;
+      font-size: .9rem;
+      cursor: pointer;
+      color: var(--muted);
+      font-weight: 600;
+      transition: border-color .2s;
+    }
+    .btn-cancel:hover { border-color: var(--accent); color: var(--accent); }
+
+    .footer-note {
+      text-align: center;
+      font-size: .78rem;
+      color: #94a3b8;
+      margin-top: 28px;
+    }
+
+    .count-badge {
+      background: var(--accent);
+      color: #fff;
+      font-size: .72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-left: 8px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: var(--success);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: .88rem;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .3s, transform .3s;
+      z-index: 200;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span class="brand">Ingenium VN — HR Portal</span>
+  <nav>
+    <a href="index.html">← Đăng ký Người Phụ Thuộc</a>
+  </nav>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Lưu trữ Hồ sơ Handover</h1>
+  <p class="subtitle">Quản lý tài liệu bàn giao và link SharePoint nội bộ</p>
+</div>
+
+<div class="container">
+
+  <!-- ADD ENTRY FORM -->
+  <div class="card">
+    <p class="section-title">Thêm mục bàn giao mới</p>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="field-label" for="f-title">Tiêu đề <span class="required-star">*</span></label>
+        <input type="text" id="f-title" placeholder="VD: Hồ sơ nhân sự Q2 2025" />
+        <div class="error-msg" id="err-title">Vui lòng nhập tiêu đề.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="field-label" for="f-category">Danh mục</label>
+        <select id="f-category">
+          <option value="general">Chung</option>
+          <option value="hr">Nhân sự (HR)</option>
+          <option value="finance">Tài chính</option>
+          <option value="operation">Vận hành</option>
+        </select>
+      </div>
+
+      <div class="form-group full">
+        <label class="field-label" for="f-desc">Mô tả / ghi chú</label>
+        <textarea id="f-desc" placeholder="Tóm tắt nội dung tài liệu bàn giao..."></textarea>
+      </div>
+
+      <div class="form-group full">
+        <label class="field-label">Link SharePoint</label>
+        <div class="sp-input-row">
+          <input type="url" id="f-sp-url" placeholder="https://company.sharepoint.com/..." />
+          <input type="text" id="f-sp-label" style="max-width:180px" placeholder="Tên hiển thị (tuỳ chọn)" />
+          <button type="button" class="btn-add-sp" onclick="addSpLink()">+ Thêm link</button>
+        </div>
+        <div class="error-msg" id="err-sp-url">URL không hợp lệ.</div>
+        <div class="sp-chips" id="sp-chips-add"></div>
+      </div>
+    </div>
+
+    <button class="btn-submit" onclick="saveEntry()">Lưu mục bàn giao</button>
+  </div>
+
+  <!-- LIST -->
+  <div class="card" style="margin-top:20px">
+    <p class="section-title">
+      Danh sách hồ sơ
+      <span class="count-badge" id="count-badge">0</span>
+    </p>
+
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Tìm kiếm tiêu đề, mô tả..." oninput="renderList()" />
+      <select class="filter-select" id="filter-cat" onchange="renderList()">
+        <option value="">Tất cả danh mục</option>
+        <option value="general">Chung</option>
+        <option value="hr">Nhân sự (HR)</option>
+        <option value="finance">Tài chính</option>
+        <option value="operation">Vận hành</option>
+      </select>
+    </div>
+
+    <div class="entry-grid" id="entry-grid">
+      <div class="empty-state">
+        <div class="empty-icon">📂</div>
+        <div>Chưa có hồ sơ nào. Thêm mục đầu tiên ở trên.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<p class="footer-note">© Ingenium VN &nbsp;·&nbsp; Dữ liệu được lưu cục bộ trên trình duyệt của bạn.</p>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="edit-modal">
+  <div class="modal">
+    <p class="modal-title">Chỉnh sửa mục bàn giao</p>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="field-label" for="e-title">Tiêu đề <span class="required-star">*</span></label>
+        <input type="text" id="e-title" />
+        <div class="error-msg" id="err-e-title">Vui lòng nhập tiêu đề.</div>
+      </div>
+      <div class="form-group">
+        <label class="field-label" for="e-category">Danh mục</label>
+        <select id="e-category">
+          <option value="general">Chung</option>
+          <option value="hr">Nhân sự (HR)</option>
+          <option value="finance">Tài chính</option>
+          <option value="operation">Vận hành</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label class="field-label" for="e-desc">Mô tả / ghi chú</label>
+        <textarea id="e-desc"></textarea>
+      </div>
+      <div class="form-group full">
+        <label class="field-label">Link SharePoint</label>
+        <div class="sp-input-row">
+          <input type="url" id="e-sp-url" placeholder="https://company.sharepoint.com/..." />
+          <input type="text" id="e-sp-label" style="max-width:180px" placeholder="Tên hiển thị (tuỳ chọn)" />
+          <button type="button" class="btn-add-sp" onclick="addSpLinkEdit()">+ Thêm link</button>
+        </div>
+        <div class="error-msg" id="err-e-sp-url">URL không hợp lệ.</div>
+        <div class="sp-chips" id="sp-chips-edit"></div>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Huỷ</button>
+      <button class="btn-submit" style="margin-top:0" onclick="updateEntry()">Lưu thay đổi</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ── STORAGE ── */
+const STORE_KEY = 'ingvn_handover_v1';
+
+function load() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; }
+  catch { return []; }
+}
+function save(data) {
+  localStorage.setItem(STORE_KEY, JSON.stringify(data));
+}
+
+/* ── STATE ── */
+let entries = load();
+let pendingSpLinks = [];   // for add form
+let editSpLinks    = [];   // for edit modal
+let editingId      = null;
+
+/* ── CATEGORY HELPERS ── */
+const CAT_LABELS = {
+  general:   'Chung',
+  hr:        'Nhân sự',
+  finance:   'Tài chính',
+  operation: 'Vận hành'
+};
+const CAT_BADGE = {
+  general:   'badge-blue',
+  hr:        'badge-orange',
+  finance:   'badge-green',
+  operation: 'badge-purple'
+};
+
+/* ── SP LINK CHIPS — ADD FORM ── */
+function addSpLink() {
+  const urlEl   = document.getElementById('f-sp-url');
+  const labelEl = document.getElementById('f-sp-label');
+  const errEl   = document.getElementById('err-sp-url');
+  const url     = urlEl.value.trim();
+  if (!isValidUrl(url)) { errEl.style.display = 'block'; return; }
+  errEl.style.display = 'none';
+  pendingSpLinks.push({ url, label: labelEl.value.trim() || shortUrl(url) });
+  urlEl.value = '';
+  labelEl.value = '';
+  renderSpChips('sp-chips-add', pendingSpLinks, (i) => { pendingSpLinks.splice(i, 1); renderSpChips('sp-chips-add', pendingSpLinks, arguments.callee); });
+}
+
+function addSpLinkEdit() {
+  const urlEl   = document.getElementById('e-sp-url');
+  const labelEl = document.getElementById('e-sp-label');
+  const errEl   = document.getElementById('err-e-sp-url');
+  const url     = urlEl.value.trim();
+  if (!isValidUrl(url)) { errEl.style.display = 'block'; return; }
+  errEl.style.display = 'none';
+  editSpLinks.push({ url, label: labelEl.value.trim() || shortUrl(url) });
+  urlEl.value = '';
+  labelEl.value = '';
+  renderSpChips('sp-chips-edit', editSpLinks, removeEditChip);
+}
+
+function removeEditChip(i) {
+  editSpLinks.splice(i, 1);
+  renderSpChips('sp-chips-edit', editSpLinks, removeEditChip);
+}
+
+function renderSpChips(containerId, links, onRemove) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  links.forEach((lk, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'sp-chip';
+    chip.innerHTML = `
+      <span class="sp-icon">🔗</span>
+      <span class="sp-label" title="${escHtml(lk.url)}">${escHtml(lk.label)}</span>
+      <button class="sp-remove" title="Xoá link" onclick="__rmChip(${i},'${containerId}')">✕</button>`;
+    container.appendChild(chip);
+  });
+  window.__rmChip = (i, cid) => {
+    if (cid === 'sp-chips-add') { pendingSpLinks.splice(i,1); renderSpChips('sp-chips-add', pendingSpLinks, null); }
+    else                        { removeEditChip(i); }
+  };
+}
+
+/* ── SAVE NEW ENTRY ── */
+function saveEntry() {
+  const title = document.getElementById('f-title').value.trim();
+  const errEl = document.getElementById('err-title');
+  if (!title) { errEl.style.display = 'block'; document.getElementById('f-title').focus(); return; }
+  errEl.style.display = 'none';
+
+  const entry = {
+    id:        Date.now().toString(36) + Math.random().toString(36).slice(2,6),
+    title,
+    category:  document.getElementById('f-category').value,
+    desc:      document.getElementById('f-desc').value.trim(),
+    links:     [...pendingSpLinks],
+    createdAt: new Date().toISOString()
+  };
+
+  entries.unshift(entry);
+  save(entries);
+
+  // reset form
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-desc').value  = '';
+  document.getElementById('f-category').value = 'general';
+  document.getElementById('f-sp-url').value   = '';
+  document.getElementById('f-sp-label').value = '';
+  pendingSpLinks = [];
+  document.getElementById('sp-chips-add').innerHTML = '';
+
+  renderList();
+  showToast('Đã lưu mục bàn giao!');
+}
+
+/* ── RENDER LIST ── */
+function renderList() {
+  const q    = document.getElementById('search-input').value.toLowerCase().trim();
+  const cat  = document.getElementById('filter-cat').value;
+  const grid = document.getElementById('entry-grid');
+
+  let filtered = entries.filter(e => {
+    const matchCat  = !cat || e.category === cat;
+    const matchText = !q   || e.title.toLowerCase().includes(q) || (e.desc||'').toLowerCase().includes(q);
+    return matchCat && matchText;
+  });
+
+  document.getElementById('count-badge').textContent = filtered.length;
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div>${q || cat ? 'Không tìm thấy kết quả.' : 'Chưa có hồ sơ nào. Thêm mục đầu tiên ở trên.'}</div></div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(e => `
+    <div class="entry-card" id="card-${e.id}">
+      <div class="entry-header">
+        <div>
+          <div class="entry-title">${escHtml(e.title)}</div>
+          <div class="entry-meta">${fmtDate(e.createdAt)}</div>
+        </div>
+        <div class="entry-actions">
+          <button class="btn-icon" onclick="openEdit('${e.id}')" title="Chỉnh sửa">✏️</button>
+          <button class="btn-icon del" onclick="deleteEntry('${e.id}')" title="Xoá">🗑️</button>
+        </div>
+      </div>
+      <span class="badge ${CAT_BADGE[e.category]||'badge-blue'}">${CAT_LABELS[e.category]||e.category}</span>
+      ${e.desc ? `<div class="entry-desc">${escHtml(e.desc)}</div>` : ''}
+      ${e.links && e.links.length ? `
+        <div class="entry-links">
+          ${e.links.map(lk => `
+            <div class="entry-link-item">
+              <span>🔗</span>
+              <span class="link-label">SharePoint</span>
+              <a href="${escHtml(lk.url)}" target="_blank" rel="noopener" title="${escHtml(lk.url)}">${escHtml(lk.label || lk.url)}</a>
+            </div>`).join('')}
+        </div>` : ''}
+    </div>`).join('');
+}
+
+/* ── DELETE ── */
+function deleteEntry(id) {
+  if (!confirm('Xoá mục này?')) return;
+  entries = entries.filter(e => e.id !== id);
+  save(entries);
+  renderList();
+  showToast('Đã xoá mục.');
+}
+
+/* ── EDIT MODAL ── */
+function openEdit(id) {
+  const e = entries.find(x => x.id === id);
+  if (!e) return;
+  editingId = id;
+  editSpLinks = (e.links || []).map(l => ({...l}));
+
+  document.getElementById('e-title').value    = e.title;
+  document.getElementById('e-category').value = e.category || 'general';
+  document.getElementById('e-desc').value     = e.desc || '';
+  document.getElementById('e-sp-url').value   = '';
+  document.getElementById('e-sp-label').value = '';
+  document.getElementById('err-e-title').style.display   = 'none';
+  document.getElementById('err-e-sp-url').style.display  = 'none';
+  renderSpChips('sp-chips-edit', editSpLinks, removeEditChip);
+
+  document.getElementById('edit-modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('edit-modal').classList.remove('open');
+  editingId = null;
+}
+
+function updateEntry() {
+  const title = document.getElementById('e-title').value.trim();
+  if (!title) { document.getElementById('err-e-title').style.display = 'block'; return; }
+  document.getElementById('err-e-title').style.display = 'none';
+
+  const idx = entries.findIndex(e => e.id === editingId);
+  if (idx === -1) return;
+
+  entries[idx] = {
+    ...entries[idx],
+    title,
+    category: document.getElementById('e-category').value,
+    desc:     document.getElementById('e-desc').value.trim(),
+    links:    [...editSpLinks],
+    updatedAt: new Date().toISOString()
+  };
+  save(entries);
+  closeModal();
+  renderList();
+  showToast('Đã cập nhật!');
+}
+
+// close modal on overlay click
+document.getElementById('edit-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+/* ── HELPERS ── */
+function isValidUrl(s) {
+  try { const u = new URL(s); return u.protocol === 'https:' || u.protocol === 'http:'; }
+  catch { return false; }
+}
+function shortUrl(url) {
+  try { const u = new URL(url); return u.hostname + (u.pathname !== '/' ? u.pathname.slice(0,40) : ''); }
+  catch { return url.slice(0,50); }
+}
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function fmtDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('vi-VN', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ── INIT ── */
+renderList();
+</script>
+</body>
+</html>
