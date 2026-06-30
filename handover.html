@@ -391,6 +391,36 @@
     .toast.show { opacity: 1; transform: translateY(0); }
 
     .footer-note { text-align: center; font-size: .78rem; color: #94a3b8; margin-top: 28px; }
+
+    /* SYNC BANNER */
+    .sync-banner {
+      background: #fefce8;
+      border: 1.5px dashed #ca8a04;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: .84rem;
+      color: #78350f;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .sync-banner .sync-text { flex: 1; min-width: 220px; line-height: 1.5; }
+    .sync-banner .sync-text strong { display: block; margin-bottom: 2px; color: #713f12; }
+    .sync-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .btn-sync {
+      background: #fff;
+      border: 1.5px solid #ca8a04;
+      color: #92400e;
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+      white-space: nowrap;
+    }
+    .btn-sync:hover { background: #fef3c7; }
   </style>
 </head>
 <body>
@@ -405,6 +435,20 @@
 </div>
 
 <div class="container">
+
+  <!-- SYNC / SHARE BANNER -->
+  <div class="card sync-banner" style="margin-top:24px">
+    <div class="sync-text">
+      <strong>⚠️ Data is saved only in this browser.</strong>
+      To share your handover list with someone else, export it to a file and send both the
+      <code>.html</code> page and the exported <code>.json</code> file — they can then import it to see the same history.
+    </div>
+    <div class="sync-actions">
+      <button class="btn-sync" onclick="exportData()">⬇️ Export Data</button>
+      <button class="btn-sync" onclick="document.getElementById('import-file').click()">⬆️ Import Data</button>
+      <input type="file" id="import-file" accept="application/json" style="display:none" onchange="importData(event)" />
+    </div>
+  </div>
 
   <!-- ADD FORM -->
   <div class="card">
@@ -796,6 +840,46 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ── EXPORT / IMPORT ── */
+function exportData() {
+  const blob = new Blob([JSON.stringify(entries, null, 2)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const stamp = new Date().toISOString().slice(0,10);
+  a.href = url;
+  a.download = `handover-data-${stamp}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Data exported!');
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    let imported;
+    try { imported = JSON.parse(reader.result); }
+    catch { alert('Invalid JSON file.'); event.target.value = ''; return; }
+    if (!Array.isArray(imported)) { alert('Invalid data format.'); event.target.value = ''; return; }
+
+    const merge = entries.length > 0 &&
+      confirm(`You have ${entries.length} existing entries.\n\nClick OK to MERGE the imported ${imported.length} entries with your current list,\nor Cancel to REPLACE your current list entirely.`);
+
+    if (merge) {
+      const existingIds = new Set(entries.map(e => e.id));
+      imported.forEach(e => { if (!existingIds.has(e.id)) entries.push(e); });
+    } else {
+      entries = imported;
+    }
+    save(entries);
+    renderList();
+    showToast(`Imported ${imported.length} entries!`);
+    event.target.value = '';
+  };
+  reader.readAsText(file);
 }
 
 renderList();
