@@ -440,11 +440,13 @@
   <div class="card sync-banner" style="margin-top:24px">
     <div class="sync-text">
       <strong>⚠️ Data is saved only in this browser.</strong>
-      To share your handover list with someone else, export it to a file and send both the
-      <code>.html</code> page and the exported <code>.json</code> file — they can then import it to see the same history.
+      Use <strong>"Export as Shareable HTML"</strong> to bake your current list into a single file —
+      send that file and the recipient can open it directly, no import needed.
+      (The plain <code>.json</code> export still works too, but requires the recipient to import it manually.)
     </div>
     <div class="sync-actions">
-      <button class="btn-sync" onclick="exportData()">⬇️ Export Data</button>
+      <button class="btn-sync" onclick="exportStandaloneHtml()" title="Best option: recipient just opens the file, no import needed">📦 Export as Shareable HTML</button>
+      <button class="btn-sync" onclick="exportData()">⬇️ Export Data (.json)</button>
       <button class="btn-sync" onclick="document.getElementById('import-file').click()">⬆️ Import Data</button>
       <input type="file" id="import-file" accept="application/json" style="display:none" onchange="importData(event)" />
     </div>
@@ -595,9 +597,18 @@
 <script>
 const STORE_KEY = 'ingvn_handover_v2';
 
+/* SEED_DATA is embedded by "Export as Shareable HTML" below. On first
+   load in a fresh browser (no localStorage yet), it seeds the list so
+   the recipient sees the data immediately without importing anything. */
+const SEED_DATA = /*__SEED_START__*/[]/*__SEED_END__*/;
+
 function load() {
-  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; }
-  catch { return []; }
+  try {
+    const stored = localStorage.getItem(STORE_KEY);
+    if (stored) return JSON.parse(stored);
+    if (SEED_DATA.length) { localStorage.setItem(STORE_KEY, JSON.stringify(SEED_DATA)); return [...SEED_DATA]; }
+    return [];
+  } catch { return []; }
 }
 function save(data) { localStorage.setItem(STORE_KEY, JSON.stringify(data)); }
 
@@ -840,6 +851,25 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ── EXPORT AS SELF-CONTAINED HTML (no import needed) ── */
+function exportStandaloneHtml() {
+  const html = document.documentElement.outerHTML;
+  const seedJson = JSON.stringify(entries);
+  const patched = '<!DOCTYPE html>\n' + html.replace(
+    /\/\*__SEED_START__\*\/[\s\S]*?\/\*__SEED_END__\*\//,
+    `/*__SEED_START__*/${seedJson}/*__SEED_END__*/`
+  );
+  const blob = new Blob([patched], { type: 'text/html' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const stamp = new Date().toISOString().slice(0,10);
+  a.href = url;
+  a.download = `handover-shared-${stamp}.html`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Shareable HTML exported!');
 }
 
 /* ── EXPORT / IMPORT ── */
