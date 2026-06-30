@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Handover File Storage</title>
   <style>
     :root {
@@ -18,7 +18,11 @@
       --radius:   10px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { width: 100%; overflow-x: hidden; }
     body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
       font-family: 'Segoe UI', Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
@@ -98,8 +102,8 @@
     .error-msg { color: var(--danger); font-size: .78rem; margin-top: 3px; display: none; }
 
     /* SP link row */
-    .sp-input-row { display: flex; gap: 8px; align-items: center; }
-    .sp-input-row input { flex: 1; }
+    .sp-input-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .sp-input-row input { flex: 1 1 160px; min-width: 0; }
     .btn-add-sp {
       flex-shrink: 0;
       background: var(--accent);
@@ -161,9 +165,9 @@
     .btn-submit:active { transform: translateY(0); }
 
     /* SEARCH */
-    .search-bar { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; }
-    .search-bar input { flex: 1; }
-    .filter-select { width: 160px; flex-shrink: 0; }
+    .search-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 16px; }
+    .search-bar input { flex: 2 1 200px; min-width: 0; }
+    .filter-select { flex: 1 1 160px; min-width: 0; }
 
     /* COUNT */
     .count-badge {
@@ -407,8 +411,9 @@
     }
     .sync-banner .sync-text { flex: 1; min-width: 220px; line-height: 1.5; }
     .sync-banner .sync-text strong { display: block; margin-bottom: 2px; color: #713f12; }
-    .sync-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .sync-actions { display: flex; flex-wrap: wrap; gap: 8px; flex-shrink: 0; width: 100%; }
     .btn-sync {
+      flex: 1 1 150px;
       background: #fff;
       border: 1.5px solid #ca8a04;
       color: #92400e;
@@ -418,7 +423,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: background .2s;
-      white-space: nowrap;
+      white-space: normal;
     }
     .btn-sync:hover { background: #fef3c7; }
 
