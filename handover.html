@@ -426,6 +426,15 @@
       white-space: normal;
     }
     .btn-sync:hover { background: #fef3c7; }
+    .btn-sync-primary {
+      background: #ca8a04;
+      color: #fff;
+      border-color: #a16207;
+      font-size: .88rem;
+    }
+    .btn-sync-primary:hover { background: #a16207; }
+    .seed-ok  { color: #15803d; font-weight: 700; }
+    .seed-nil { color: #b45309; font-weight: 700; }
 
     /* ── RESPONSIVE / MOBILE ── */
     @media(max-width:600px){
@@ -478,12 +487,12 @@
 <body>
 
 <div class="topbar">
-  <span class="brand">Ingenium VN — HR Portal</span>
+  <span class="brand">Accounting Handover</span>
 </div>
 
 <div class="hero">
   <h1>Handover File Storage</h1>
-  <p class="subtitle">Manage handover tasks, requirements, and SharePoint links</p>
+  <p class="subtitle">Manage handover tasks, requirements, and links</p>
 </div>
 
 <div class="container">
@@ -491,15 +500,15 @@
   <!-- SYNC / SHARE BANNER -->
   <div class="card sync-banner" style="margin-top:24px">
     <div class="sync-text">
-      <strong>⚠️ Data is saved only in this browser.</strong>
-      Use <strong>"Export as Shareable HTML"</strong> to bake your current list into a single file —
-      send that file and the recipient can open it directly, no import needed.
-      (The plain <code>.json</code> export still works too, but requires the recipient to import it manually.)
+      <strong>📤 Sharing with others?</strong>
+      Click <strong>"Export &amp; Share"</strong> — it bakes your entries into a single file.
+      Send <em>that</em> file; the recipient opens it directly and sees all entries immediately.
+      <span id="seed-status" style="display:none;margin-top:4px;font-size:.8rem;"></span>
     </div>
     <div class="sync-actions">
-      <button class="btn-sync" onclick="exportStandaloneHtml()" title="Best option: recipient just opens the file, no import needed">📦 Export as Shareable HTML</button>
-      <button class="btn-sync" onclick="exportData()">⬇️ Export Data (.json)</button>
-      <button class="btn-sync" onclick="document.getElementById('import-file').click()">⬆️ Import Data</button>
+      <button class="btn-sync btn-sync-primary" onclick="exportStandaloneHtml()">📦 Export &amp; Share</button>
+      <button class="btn-sync" onclick="exportData()">⬇️ Backup (.json)</button>
+      <button class="btn-sync" onclick="document.getElementById('import-file').click()">⬆️ Restore (.json)</button>
       <input type="file" id="import-file" accept="application/json" style="display:none" onchange="importData(event)" />
     </div>
   </div>
@@ -738,6 +747,24 @@ function saveEntry() {
   showToast('Entry saved!');
 }
 
+/* ── SEED STATUS INDICATOR ── */
+function updateSeedStatus() {
+  const el = document.getElementById('seed-status');
+  if (!el) return;
+  const n = entries.length;
+  const seeded = SEED_DATA.length;
+  if (n === 0) {
+    el.style.display = 'block';
+    el.innerHTML = `<span class="seed-nil">⚠️ No entries yet — add entries above, then click "Export &amp; Share".</span>`;
+  } else if (seeded === 0) {
+    el.style.display = 'block';
+    el.innerHTML = `<span class="seed-nil">⚠️ You have ${n} entr${n>1?'ies':'y'} in this browser but <strong>0 are baked into this file</strong>. Click "Export &amp; Share" to create a shareable copy with your data.</span>`;
+  } else {
+    el.style.display = 'block';
+    el.innerHTML = `<span class="seed-ok">✅ This file has ${seeded} entr${seeded>1?'ies':'y'} baked in — safe to share.</span>`;
+  }
+}
+
 /* ── RENDER LIST ── */
 function renderList() {
   const q    = document.getElementById('search-input').value.toLowerCase().trim();
@@ -751,6 +778,7 @@ function renderList() {
   });
 
   document.getElementById('count-badge').textContent = filtered.length;
+  updateSeedStatus();
 
   if (!filtered.length) {
     grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div>${q||cat ? 'No results found.' : 'No entries yet. Add the first one above.'}</div></div>`;
@@ -907,6 +935,10 @@ function showToast(msg) {
 
 /* ── EXPORT AS SELF-CONTAINED HTML (no import needed) ── */
 function exportStandaloneHtml() {
+  if (entries.length === 0) {
+    alert('⚠️ No entries to export.\n\nAdd at least one handover entry before sharing, otherwise the recipient will see an empty list.');
+    return;
+  }
   const html = document.documentElement.outerHTML;
   const seedJson = JSON.stringify(entries);
   const patched = '<!DOCTYPE html>\n' + html.replace(
@@ -921,7 +953,7 @@ function exportStandaloneHtml() {
   a.download = `handover-shared-${stamp}.html`;
   a.click();
   URL.revokeObjectURL(url);
-  showToast('Shareable HTML exported!');
+  showToast(`✅ Exported with ${entries.length} entries — send this file!`);
 }
 
 /* ── EXPORT / IMPORT ── */
